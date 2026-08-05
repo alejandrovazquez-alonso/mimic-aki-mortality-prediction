@@ -1,4 +1,4 @@
-# In-Hospital Mortality Prediction in ICU Patients with Acute Kidney Injury (MIMIC-III)
+﻿# In-Hospital Mortality Prediction in ICU Patients with Acute Kidney Injury (MIMIC-III)
 
 Machine learning pipeline to predict in-hospital mortality (IHM) in ICU patients with Acute
 Kidney Injury (AKI, KDIGO criteria), using clinical data derived from **MIMIC-III**.
@@ -43,37 +43,30 @@ if running on Kaggle).
 | Evaluation | AUROC, F1, sensitivity, specificity, balanced accuracy; explicit train-vs-test overfitting analysis |
 | Interpretability | Feature importance comparison between Random Forest and XGBoost, cross-validated against clinical plausibility |
 
-## Key findings (actual run)
+## Key findings (actual run, executed on Kaggle)
 
 | Model | AUROC train | AUROC test | Train-test gap |
 |---|---|---|---|
-| Logistic Regression (L2) | 0.8891 | 0.8725 | +0.017 (no significant overfitting) |
-| Random Forest (100 trees, CV5-selected) | 0.9883 | 0.8742 | +0.114 (apparent overfitting) |
-| **XGBoost** | 0.9998 | **0.8897** | +0.110 (apparent overfitting) |
+| Logistic Regression (L2) | 0.8892 | 0.8724 | +0.017 (no significant overfitting) |
+| Random Forest (300 trees, CV5-selected) | 0.9893 | 0.8793 | +0.110 (apparent overfitting) |
+| **XGBoost** | 0.9997 | **0.8946** | +0.105 (apparent overfitting) |
 
-- **XGBoost selected as final model** — best test AUROC (0.8897).
+- **XGBoost selected as final model** — best test AUROC (0.8946).
 - Threshold selection was done in two passes: a first pass using a weighted Youden Index
-  (3× sensitivity) produced an aggressive threshold (τ≈0.08, 94% sensitivity / 64%
-  specificity); a second, refined pass selected the threshold maximizing F1 per model and
-  ranked models by mean(AUROC, F1) — since the assignment evaluates both metrics — yielding
-  **τ = 0.21** for XGBoost (F1 = 0.697, sensitivity = 82.6%, specificity = 79.4%, 34 false
-  negatives out of 195 deaths in the test set).
+  (3× sensitivity) produced τ≈0.146 (90% sensitivity / 76% specificity); a second, refined
+  pass selected the threshold maximizing F1 per model and ranked models by mean(AUROC, F1) —
+  since the assignment evaluates both metrics — yielding **τ = 0.26** for XGBoost
+  (F1 = 0.710, sensitivity = 78.0%, specificity = 84.3%, 43 false negatives out of 195
+  deaths in the test set).
 - Cohort: 3,550 patients, 974 deaths (27.4% mortality, ratio 2.64:1). Train 2,840 / test 710,
   stratified split.
 - Class weights (train): survivors = 0.69, deceased = 1.82 — a missed death weighs ~2.6×
   more than a missed survival during training.
+- 9 variables shared in the top-10 feature importance of both Random Forest and XGBoost:
+  `age`, `bic_mean`, `bp_mean`, `bp_min`, `bun_max`, `bun_mean`, `gcs_max`, `gcs_mean`,
+  `gcs_min` — consistent with established ICU severity and renal function markers.
 
 ## Repository structure
-
-```
-mimic-aki-mortality-prediction/
-├── notebooks/
-│   └── mimic_aki_pipeline.ipynb    # Full pipeline: EDA → preprocessing → modeling → evaluation
-├── data/                            # Not versioned — see Data access above
-├── requirements.txt
-└── README.md
-```
-
 ## Requirements
 
 ```bash
