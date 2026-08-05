@@ -133,7 +133,7 @@ physiotherapist.
 
 ## Related work
 
-- [NHANES periodontal health / muscle strength pipeline (PySpark, Big Data)](#) — link to be added
+- [NHANES periodontal health / muscle strength pipeline (PySpark, Big Data)](https://github.com/alejandrovazquez-alonso/nhanes-periodontal-muscle-strength)
 - [BRFSS health risk clustering & classification](#) — link to be added
 - [BPPV clinical decision support tool (React)](#) — link to be added
 
