@@ -112,6 +112,24 @@ physiotherapist.
   APACHE II, SOFA), which have been tested across many institutions over decades. This
   repository is a methodological exercise demonstrating a complete, reproducible ML pipeline
   applied to a clinical prediction problem — not a clinically validated tool.
+- **Limited variable scope.** The dataset provides 36 variables, all demographic (age,
+  gender) or physiological/lab summary statistics (max/mean/min of vital signs and blood
+  work) plus ICU length of stay. It does not include preexisting comorbidities (e.g.
+  diabetes, chronic kidney disease, heart failure), the underlying cause of AKI (prerenal,
+  renal, or postrenal — clinically important for prognosis), or specific interventions
+  received (e.g. renal replacement therapy/dialysis, vasopressors, mechanical ventilation
+  beyond FiO2 as an indirect proxy). The model therefore captures a simplified physiological
+  snapshot of the ICU stay rather than the full clinical picture a treating physician would
+  use, and its predictive performance is necessarily bounded by what these 36 variables can
+  represent.
+- **Global feature importance, not explainability.** The interpretability analysis in this
+  project (Random Forest and XGBoost feature importance) is global and impurity/gain-based —
+  it identifies which variables matter across the whole cohort, but does not explain why the
+  model flagged a *specific* patient as high-risk, nor capture non-linear interactions
+  between variables. XGBoost is also inherently less interpretable than Logistic Regression
+  by construction (an ensemble of hundreds of trees vs. a single set of coefficients). If the
+  end goal were clinical adoption, instance-level explainability methods (e.g. SHAP, LIME)
+  would be a requirement this project does not yet address.
 
 ## Related work
 
