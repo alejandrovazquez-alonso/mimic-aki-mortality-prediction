@@ -85,7 +85,7 @@ pip install -r requirements.txt
 
 ## Author's note on AI assistance
 
-This pipeline was developed with the assistance of generative AI (Claude, Anthropic) for code
+This pipeline was developed with the assistance of generative AI for code
 optimization, conceptual explanation of methodological decisions, and clinical interpretation
 validation. All final methodological design decisions and clinical interpretation were
 reviewed and validated by the author, drawing on 9+ years of clinical experience as a
