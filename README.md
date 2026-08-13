@@ -3,7 +3,7 @@
 Machine learning pipeline to predict in-hospital mortality (IHM) in ICU patients with Acute
 Kidney Injury (AKI, KDIGO criteria), using clinical data derived from **MIMIC-III**.
 
-🔗 **[Ver dashboard interactivo](https://mimic-aki-mortality-prediction-9jivmveebtqvi24uh2tdmt.streamlit.app)** —
+🔗 **[Ver dashboard interactivo](https://mimic-aki-mortality-prediction-w6qtxjmgziwrvgzquyxqbx.streamlit.app)** —
 formulario de predicción con el modelo XGBoost entrenado y análisis exploratorio del proyecto.
 
 **Author:** Alejandro Vázquez Alonso — Physiotherapist (9+ years clinical experience, ES/FR)
@@ -70,80 +70,3 @@ if running on Kaggle).
   `gcs_min` — consistent with established ICU severity and renal function markers.
 
 ## Repository structure
-
-```
-mimic-aki-mortality-prediction/
-├── notebooks/
-│   └── mimic_aki_pipeline.ipynb    # Full pipeline: EDA → preprocessing → modeling → evaluation
-├── data/                            # Not versioned — see Data access above
-├── app/                             # Interactive Streamlit dashboard
-│   ├── streamlit_app.py
-│   ├── requirements.txt
-│   ├── artifacts/                    # Trained model + preprocessing objects (exported from Kaggle)
-│   └── figures/                      # Real figures extracted from the executed notebook
-├── requirements.txt
-└── README.md
-```
-
-## Requirements
-
-```bash
-pip install -r requirements.txt
-```
-
-## Author's note on AI assistance
-
-This pipeline was developed with the assistance of generative AI (Claude, Anthropic) for code
-optimization, conceptual explanation of methodological decisions, and clinical interpretation
-validation. All final methodological design decisions and clinical interpretation were
-reviewed and validated by the author, drawing on 9+ years of clinical experience as a
-physiotherapist.
-
-## Limitations
-
-- **Single-center, single-country data.** MIMIC-III was collected at Beth Israel Deaconess
-  Medical Center (Boston, USA) between 2001 and 2012. The model has not been externally
-  validated on other hospitals, healthcare systems, or countries. Performance on populations
-  with different demographics, comorbidity patterns, or clinical practices (e.g. European
-  cohorts) is unknown and should not be assumed to transfer.
-- **No temporal validation.** All data comes from a single historical period; clinical
-  practice, diagnostic criteria, and case-mix in ICUs have evolved since 2012, which can
-  degrade model performance over time (dataset shift).
-- **Single train/test split.** While 5-fold cross-validation was used during Random Forest
-  hyperparameter selection, the final reported test metrics come from one stratified 80/20
-  split. Results may vary modestly with a different split (see the two Random Forest runs
-  documented above, which produced slightly different optimal `n_estimators` and AUROC due
-  to environment-level variation).
-- **Academic scope, not a clinical decision tool.** This project has not undergone the
-  validation, regulatory review, or prospective testing required for clinical use. It should
-  not be compared directly to established, prospectively validated severity scores (e.g.
-  APACHE II, SOFA), which have been tested across many institutions over decades. This
-  repository is a methodological exercise demonstrating a complete, reproducible ML pipeline
-  applied to a clinical prediction problem — not a clinically validated tool.
-- **Limited variable scope.** The dataset provides 36 variables, all demographic (age,
-  gender) or physiological/lab summary statistics (max/mean/min of vital signs and blood
-  work) plus ICU length of stay. It does not include preexisting comorbidities (e.g.
-  diabetes, chronic kidney disease, heart failure), the underlying cause of AKI (prerenal,
-  renal, or postrenal — clinically important for prognosis), or specific interventions
-  received (e.g. renal replacement therapy/dialysis, vasopressors, mechanical ventilation
-  beyond FiO2 as an indirect proxy). The model therefore captures a simplified physiological
-  snapshot of the ICU stay rather than the full clinical picture a treating physician would
-  use, and its predictive performance is necessarily bounded by what these 36 variables can
-  represent.
-- **Global feature importance, not explainability.** The interpretability analysis in this
-  project (Random Forest and XGBoost feature importance) is global and impurity/gain-based —
-  it identifies which variables matter across the whole cohort, but does not explain why the
-  model flagged a *specific* patient as high-risk, nor capture non-linear interactions
-  between variables. XGBoost is also inherently less interpretable than Logistic Regression
-  by construction (an ensemble of hundreds of trees vs. a single set of coefficients). If the
-  end goal were clinical adoption, instance-level explainability methods (e.g. SHAP, LIME)
-  would be a requirement this project does not yet address.
-
-## Related work
-
-- [NHANES periodontal health / muscle strength pipeline (PySpark, Big Data)](https://github.com/alejandrovazquez-alonso/nhanes-periodontal-muscle-strength)
-- [BRFSS health risk clustering & classification](https://github.com/alejandrovazquez-alonso/brfss-musculoskeletal-risk-pipeline)
-
-## License
-
-MIT
